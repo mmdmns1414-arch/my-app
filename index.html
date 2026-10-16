@@ -2,702 +2,407 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>قیمت‌نامه فروشگاه</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منگل | فروشگاه</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f4f6f8;
-  color:#222;
-}
-header{
-  background:#1677ff;
-  color:white;
-  padding:28px 18px;
-  text-align:center;
-}
-header h1{margin:0 0 10px;font-size:28px}
-header p{margin:0;font-size:15px}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-
-.search{
-  width:100%;
-  padding:17px 20px;
-  border:2px solid #ddd;
-  border-radius:18px;
-  font-size:17px;
-  outline:none;
-  margin-bottom:15px;
-}
-.search:focus{border-color:#1677ff}
-
-.categories{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:5px 0 15px;
-}
-.category{
-  white-space:nowrap;
-  border:1px solid #ddd;
-  background:white;
-  padding:12px 18px;
-  border-radius:30px;
-  cursor:pointer;
-}
-.category.active{
-  background:#1677ff;
-  color:white;
-  border-color:#1677ff;
-}
-
-.product{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  margin:12px 0;
-  box-shadow:0 3px 15px rgba(0,0,0,.06);
-}
-.product h3{
-  margin:0 0 10px;
-  font-size:20px;
-}
-.product .cat{
-  color:#777;
-  font-size:14px;
-}
-.price{
-  color:#1677ff;
-  font-size:22px;
-  font-weight:bold;
-  margin-top:12px;
-}
-.empty{
-  text-align:center;
-  padding:40px 10px;
-  color:#777;
-}
-
-.admin-btn{
-  position:fixed;
-  left:18px;
-  bottom:18px;
-  border:0;
-  background:#111;
-  color:white;
-  padding:14px 20px;
-  border-radius:30px;
-  font-size:15px;
-  box-shadow:0 4px 15px #999;
-}
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  z-index:10;
-  overflow:auto;
-}
-.modal-box{
-  background:white;
-  width:92%;
-  max-width:600px;
-  margin:40px auto;
-  padding:22px;
-  border-radius:20px;
-}
-.modal-box h2{margin-top:0}
-
-input,select{
-  width:100%;
-  padding:14px;
-  margin:7px 0;
-  border:1px solid #ddd;
-  border-radius:12px;
-  font-size:16px;
-}
-
-button{
-  cursor:pointer;
-}
-
-.btn{
-  border:0;
-  padding:12px 18px;
-  border-radius:12px;
-  font-size:15px;
-  margin:5px 0;
-}
-.primary{background:#1677ff;color:white}
-.danger{background:#e53935;color:white}
-.gray{background:#eee}
-
-.admin-product{
-  border:1px solid #ddd;
-  padding:15px;
-  border-radius:14px;
-  margin:10px 0;
-}
-.admin-product strong{font-size:17px}
-
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f4f6f9;color:#222}
+header{background:#153e35;color:white;text-align:center;padding:24px 12px}
+header h1{margin:0 0 8px;font-size:32px}
+header p{margin:0;color:#d4e7df}
+.top{max-width:1100px;margin:18px auto;padding:0 12px}
+input,select,button{font-family:inherit;font-size:14px;padding:12px;border-radius:9px;border:1px solid #ddd}
+input,select{width:100%;background:white}
+button{border:0;background:#176c51;color:white;cursor:pointer}
+button:hover{opacity:.85}
+.search{margin-bottom:12px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.categories button{background:#e1eae6;color:#174b3c}
+.categories button.active{background:#176c51;color:white}
+h2{font-size:20px}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+.card{background:white;padding:15px;border-radius:13px;box-shadow:0 2px 8px #0000000b;display:flex;flex-direction:column;gap:10px}
+.card h3{font-size:15px;line-height:1.8;margin:0;overflow-wrap:anywhere}
+.price{font-weight:bold;color:#16704e;font-size:16px}
+.tag{font-size:12px;color:#777}
+.empty{text-align:center;padding:30px;color:#777;grid-column:1/-1}
+footer{text-align:center;padding:25px;color:#777;font-size:12px}
+.admin-btn{display:block;margin:15px auto;background:#263b36}
+.actions{display:flex;gap:6px}
+.actions button{flex:1;padding:8px;font-size:12px}
+.edit{background:#2467a0}
+.delete{background:#b82f39}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:5;overflow:auto;padding:18px}
+.box{background:white;border-radius:15px;max-width:520px;margin:25px auto;padding:20px}
+.box h2{margin-top:0}
+.form{display:grid;gap:10px}
+.form button{padding:13px}
+.cancel{background:#777}
 .hidden{display:none!important}
-
-.close{
-  float:left;
-  font-size:25px;
-  cursor:pointer;
-}
-
-.login-error{
-  color:#e53935;
-  margin:8px 0;
-}
-
-@media(max-width:500px){
-  header h1{font-size:24px}
-  .container{padding:14px}
-}
+.notice{font-size:12px;color:#666;line-height:1.8}
+@media(max-width:400px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:11px}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>قیمت‌نامه فروشگاه</h1>
-  <p>جستجوی سریع قیمت کالاها</p>
+<h1>منگل</h1>
+<p>فروشگاه منگل | جست‌وجو و مشاهده محصولات</p>
 </header>
 
-<div class="container">
+<main class="top">
+<input id="search" class="search" placeholder="🔎 نام محصول را جست‌وجو کن...">
 
-  <input
-    id="search"
-    class="search"
-    type="text"
-    placeholder="نام کالا یا بخشی از آن را جستجو کنید..."
-    oninput="renderProducts()"
-  >
+<div id="categories" class="categories"></div>
 
-  <div class="categories" id="categories"></div>
+<h2 id="title">همه محصولات</h2>
+<div id="products" class="products"></div>
 
-  <div id="products"></div>
+<button class="admin-btn" onclick="openAdmin()">⚙️ مدیریت محصولات</button>
+</main>
 
+<footer>فروشگاه منگل</footer>
+
+<div id="loginModal" class="modal">
+<div class="box">
+<h2>ورود به مدیریت</h2>
+<form class="form" onsubmit="login(event)">
+<input id="password" type="password" placeholder="رمز مدیریت" required>
+<button type="submit">ورود</button>
+<button type="button" class="cancel" onclick="closeModal('loginModal')">بازگشت</button>
+<p class="notice">رمز پیش‌فرض: 123456</p>
+</form>
+</div>
 </div>
 
-<button class="admin-btn" onclick="openAdmin()">⚙️ مدیریت</button>
-
-
-<!-- پنجره مدیریت -->
-<div class="modal" id="adminModal">
-  <div class="modal-box">
-
-    <span class="close" onclick="closeAdmin()">×</span>
-
-    <!-- ورود -->
-    <div id="loginBox">
-      <h2>🔐 ورود مدیر</h2>
-
-      <p>رمز مدیریت را وارد کنید:</p>
-
-      <input
-        type="password"
-        id="password"
-        placeholder="رمز مدیریت"
-      >
-
-      <div id="loginError" class="login-error"></div>
-
-      <button class="btn primary" onclick="login()">
-        ورود
-      </button>
-
-      <button class="btn gray" onclick="closeAdmin()">
-        بستن
-      </button>
-    </div>
-
-
-    <!-- پنل مدیریت -->
-    <div id="panelBox" class="hidden">
-
-      <h2>⚙️ پنل مدیریت</h2>
-
-      <h3>➕ افزودن کالا</h3>
-
-      <input
-        id="productName"
-        placeholder="نام کالا، مثال: روغن ۱۳۰۰ گرم"
-      >
-
-      <input
-        id="productPrice"
-        type="number"
-        placeholder="قیمت به تومان"
-      >
-
-      <select id="productCategory">
-        <option value="شوینده">شوینده</option>
-        <option value="مواد غذایی">مواد غذایی</option>
-        <option value="لوازم منزل">لوازم منزل</option>
-        <option value="نوشیدنی">نوشیدنی</option>
-        <option value="لوازم التحریر">لوازم التحریر</option>
-        <option value="اسباب بازی">اسباب بازی</option>
-        <option value="بهداشتی">بهداشتی</option>
-      </select>
-
-      <button class="btn primary" onclick="addProduct()">
-        ➕ ثبت کالا
-      </button>
-
-      <hr>
-
-      <h3>📦 کالاهای ثبت‌شده</h3>
-
-      <div id="adminProducts"></div>
-
-      <button class="btn gray" onclick="logout()">
-        خروج از پنل
-      </button>
-
-    </div>
-
-  </div>
+<div id="adminModal" class="modal">
+<div class="box">
+<h2>مدیریت محصولات</h2>
+<form id="productForm" class="form" onsubmit="saveProduct(event)">
+<input id="productName" placeholder="نام محصول" required>
+<input id="productPrice" type="number" min="0" placeholder="قیمت به تومان" required>
+<select id="productCategory" required></select>
+<button type="submit" id="saveBtn">افزودن محصول</button>
+<button type="button" class="cancel" onclick="resetForm()">لغو ویرایش</button>
+</form>
+<hr>
+<p class="notice">برای ویرایش یا حذف، از دکمه‌های زیر هر محصول استفاده کن.</p>
+<button class="cancel" onclick="logout()">خروج از مدیریت</button>
+<button class="cancel" onclick="closeModal('adminModal')">بستن</button>
 </div>
-
+</div>
 
 <script>
-
-const categories = [
-  "همه",
-  "شوینده",
-  "مواد غذایی",
-  "لوازم منزل",
-  "نوشیدنی",
-  "لوازم التحریر",
-  "اسباب بازی",
-  "بهداشتی"
+const categoriesList=[
+"همه محصولات",
+"شوینده",
+"مواد غذایی",
+"لوازم منزل",
+"نوشیدنی",
+"لوازم التحریر",
+"اسباب بازی",
+"بهداشتی"
 ];
 
-let selectedCategory = "همه";
+const rawProducts = [
+["آدامس", "مواد غذایی", 10000],
+["آدامس خرسی", "مواد غذایی", 10000],
+["آدامس موزی", "مواد غذایی", 10000],
+["آدامس توپی", "مواد غذایی", 15000],
+["آدامس بادکنکی", "مواد غذایی", 15000],
+["آدامس نعنایی", "مواد غذایی", 10000],
+["آدامس دارچینی", "مواد غذایی", 10000],
+["آدامس میوه‌ای", "مواد غذایی", 10000],
+["آدامس تکی", "مواد غذایی", 5000],
+["آدامس پاکتی", "مواد غذایی", 20000],
+["آدامس نواری", "مواد غذایی", 10000],
+["آدامس شکلاتی", "مواد غذایی", 15000],
 
-let products = JSON.parse(
-  localStorage.getItem("products")
-) || [
+["باتری قلمی", "لوازم منزل", 80000],
+["باتری نیم‌قلمی", "لوازم منزل", 80000],
+["باتری کتابی", "لوازم منزل", 120000],
+["باتری ساعتی", "لوازم منزل", 50000],
+["باتری کیاپی", "لوازم منزل", 80000],
+["باتری کوچک", "لوازم منزل", 50000],
+["باتری بزرگ", "لوازم منزل", 120000],
+["باتری بسته‌ای", "لوازم منزل", 150000],
 
-  {
-    id: 1,
-    name: "روغن ۱۳۰۰ گرم",
-    price: 150000,
-    category: "مواد غذایی"
-  },
+["بادکنک", "اسباب بازی", 10000],
+["بادکنک رنگی", "اسباب بازی", 15000],
+["بادکنک بسته‌ای", "اسباب بازی", 50000],
+["برگه آچار", "لوازم التحریر", 3000],
+["پونز", "لوازم التحریر", 30000],
+["پرگار", "لوازم التحریر", 120000],
+["چسب رازی کوچک", "لوازم التحریر", 50000],
+["چسب رازی بزرگ", "لوازم التحریر", 100000],
+["چسب برق", "لوازم منزل", 50000],
+["چسب نواری کوچک", "لوازم التحریر", 30000],
+["چسب نواری بزرگ سبز", "لوازم التحریر", 80000],
+["چسب نواری بزرگ زرد", "لوازم التحریر", 80000],
+["چسب دوطرفه", "لوازم التحریر", 80000],
+["چسب موش", "لوازم منزل", 60000],
+["چسب قطره‌ای قفاری قرمز", "لوازم منزل", 65000],
+["چسب یک دو سه بزرگ", "لوازم منزل", 580000],
+["چسب یک دو سه کوچک", "لوازم منزل", 280000],
 
-  {
-    id: 2,
-    name: "مایع ظرفشویی ۷۵۰ گرم",
-    price: 85000,
-    category: "شوینده"
-  },
+["خودکار آبی", "لوازم التحریر", 15000],
+["خودکار قرمز", "لوازم التحریر", 15000],
+["خودکار مشکی", "لوازم التحریر", 15000],
+["خودکار رنگی", "لوازم التحریر", 25000],
+["مداد مشکی", "لوازم التحریر", 15000],
+["مداد قرمز", "لوازم التحریر", 15000],
+["مداد رنگی", "لوازم التحریر", 80000],
+["خمیر کلی کوچک", "اسباب بازی", 150000],
+["خمیر کلی بزرگ", "اسباب بازی", 180000],
+["دستمال جادویی", "لوازم منزل", 320000],
 
-  {
-    id: 3,
-    name: "نوشابه خانواده",
-    price: 65000,
-    category: "نوشیدنی"
-  }
+["سلفون ۱۰ یارد", "لوازم منزل", 50000],
+["سلفون ۵۰ یارد", "لوازم منزل", 150000],
+["سلفون ۱۰۰ یارد", "لوازم منزل", 280000],
+["سلفون ۲۰۰ یارد", "لوازم منزل", 450000],
+["سوزن منگنه بزرگ مدل اول", "لوازم التحریر", 120000],
+["سوزن منگنه کوچک مدل اول", "لوازم التحریر", 60000],
+["صابون گلنار", "بهداشتی", 80000],
+["طناب کوچک", "لوازم منزل", 80000],
+["طناب متوسط", "لوازم منزل", 150000],
+["طناب بزرگ", "لوازم منزل", 250000],
+["ظرف یک‌بارمصرف بزرگ مدل اول", "لوازم منزل", 150000],
+["ظرف یک‌بارمصرف کوچک مدل اول", "لوازم منزل", 80000],
+["لاک غلط‌گیر", "لوازم التحریر", 85000],
+["فوتیر", "مواد غذایی", 110000],
+["فینیش", "لوازم منزل", 50000],
+["قند", "مواد غذایی", 170000],
+["شکر", "مواد غذایی", 140000],
+["کمپوت آناناس بزرگ", "مواد غذایی", 450000],
+["کمپوت آناناس کوچک", "مواد غذایی", 280000],
+["کاغذ کادو", "لوازم التحریر", 20000],
+["کمپوت سیب", "مواد غذایی", 95000],
+["لیوان کاغذی بسته‌ای", "لوازم منزل", 180000],
 
+["لامپ ۵ وات", "لوازم منزل", 120000],
+["لامپ ۳۰ وات", "لوازم منزل", 650000],
+["لامپ ۱۰ وات", "لوازم منزل", 160000],
+["لامپ ۱۲ وات", "لوازم منزل", 220000],
+["لامپ ۲۰ وات", "لوازم منزل", 480000],
+["لامپ ۱۵ وات", "لوازم منزل", 280000],
+["لامپ ۴۰ وات", "لوازم منزل", 900000],
+
+["ماژیک", "لوازم التحریر", 68000],
+["نوک مدادی", "لوازم التحریر", 68000],
+["ماژیک هایلایت", "لوازم التحریر", 85000],
+["فوم مهمانی", "اسباب بازی", 180000],
+["توپ چهارقلو", "اسباب بازی", 250000],
+["روبیک", "اسباب بازی", 280000],
+["ژل مو کوچک", "بهداشتی", 220000],
+["ژل مو بزرگ", "بهداشتی", 450000],
+
+["ناخن‌گیر بزرگ", "بهداشتی", 180000],
+["ناخن‌گیر کوچک", "بهداشتی", 120000],
+["کرم پمپی", "بهداشتی", 190000],
+["کرم اقتصادی", "بهداشتی", 285000],
+["ظرف ساندویچی دوقلو", "لوازم منزل", 250000],
+["پودر مورچه", "شوینده", 80000],
+["نخ دندان کانفیدنت", "بهداشتی", 180000],
+["اود سفید کوچک", "بهداشتی", 75000],
+["اود رنگی", "بهداشتی", 110000],
+["دفتر ساده کوچک", "لوازم التحریر", 35000],
+["چسب موش بسته‌ای", "لوازم منزل", 60000],
+["چوب بستنی", "لوازم التحریر", 35000],
+["دستکش ظرفشویی بلند", "لوازم منزل", 230000],
+["دستکش ظرفشویی کوتاه", "لوازم منزل", 185000],
+["صابون لوکس", "بهداشتی", 120000],
+
+["سس گلوریا بزرگ", "مواد غذایی", 320000],
+["سس گلوریا کوچک", "مواد غذایی", 95000],
+["لوله‌بازکن نوگان کوچک", "شوینده", 380000],
+["قهوه مولتی کافه شیشه‌ای", "مواد غذایی", 770000],
+["نخ دندان مهر", "بهداشتی", 120000],
+["موس مو", "بهداشتی", 480000],
+["تافت بزرگ", "بهداشتی", 680000],
+["تافت متوسط", "بهداشتی", 580000],
+["تافت کوچک", "بهداشتی", 480000],
+["شمع ۲۰ سانتی", "لوازم منزل", 30000],
+["شمع بلند", "لوازم منزل", 45000],
+["لاک‌پاک‌کن", "بهداشتی", 70000],
+["سوهان ناخن", "بهداشتی", 120000],
+["کرم آرای", "بهداشتی", 120000],
+["واکس کفش ممتاز", "لوازم منزل", 85000],
+["فندک آشپزخانه", "لوازم منزل", 150000],
+["ژل آتش‌زا بزرگ", "لوازم منزل", 180000],
+["کویچک", "مواد غذایی", 120000],
+["اسباب‌بازی دایناسور", "اسباب بازی", 680000],
+["کاک مخصوص زعفرانی", "مواد غذایی", 350000],
+["سجوک", "مواد غذایی", 280000],
+["وازلین", "بهداشتی", 120000],
+["خط‌کش اکلیلی", "لوازم التحریر", 220000],
+["شابلون", "لوازم التحریر", 80000],
+["اسید کلریدریک نوگان بزرگ", "شوینده", 450000],
+["سفیدکننده نوگان دی‌اس بزرگ", "شوینده", 260000],
+
+["منگنه کوچک", "لوازم التحریر", 280000],
+["سوزن منگنه کوچک مدل دوم", "لوازم التحریر", 65000],
+["منگنه بزرگ", "لوازم التحریر", 380000],
+["سوزن منگنه بزرگ مدل دوم", "لوازم التحریر", 85000],
+["جوراب نیم‌ساق", "بهداشتی", 190000],
+["جوراب مچی", "بهداشتی", 190000],
+["جوراب بلند", "بهداشتی", 250000],
+["جوراب نانو بلند", "بهداشتی", 110000],
+["جوراب زنانه", "بهداشتی", 55000],
+["اسلایم آیس‌پک", "اسباب بازی", 350000],
+["اسلایم ساده", "اسباب بازی", 280000],
+["اسلایم کوچک", "اسباب بازی", 180000],
+["ظرف یک‌بارمصرف بزرگ مدل دوم", "لوازم منزل", 280000],
+["ظرف یک‌بارمصرف کوچک مدل دوم", "لوازم منزل", 380000],
+["کاسه یک‌بارمصرف", "لوازم منزل", 150000],
+["نی بسته‌ای", "لوازم منزل", 150000],
+["نخ دندان اود بزرگ", "بهداشتی", 250000],
+["عناب بسته‌ای", "مواد غذایی", 180000],
+["کیسه زباله", "لوازم منزل", 370000]
 ];
 
-
-function saveProducts(){
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products)
-  );
+function normalizeProduct(row,i){
+return {id:10000+i,name:row[0],category:row[1],price:Number(row[2])};
 }
 
+let products=[];
+try{
+products=JSON.parse(localStorage.getItem("products")||"[]");
+if(!Array.isArray(products)) products=[];
+}catch(e){products=[];}
 
-/* تبدیل اعداد فارسی به انگلیسی */
-function normalize(text){
-
-  return String(text)
-    .replace(/[۰-۹]/g, function(d){
-      return "۰۱۲۳۴۵۶۷۸۹".indexOf(d);
-    })
-    .replace(/[٠-٩]/g, function(d){
-      return "٠١٢٣٤٥٦٧٨٩".indexOf(d);
-    })
-    .toLowerCase()
-    .trim();
-
+/* افزودن فهرست جدید فقط یک بار؛ محصولات قبلی حفظ می‌شوند */
+if(!localStorage.getItem("mongel_products_seed_v1")){
+const existingIds=new Set(products.map(p=>Number(p.id)));
+const added=rawProducts.map(normalizeProduct).filter(p=>!existingIds.has(p.id));
+products=products.concat(added);
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("mongel_products_seed_v1","1");
 }
 
+let selectedCategory="همه محصولات";
+let admin=false;
+let editingId=null;
 
-/* ساخت دسته‌بندی‌ها */
-function renderCategories(){
+const $=id=>document.getElementById(id);
+const money=n=>Number(n||0).toLocaleString("fa-IR")+" تومان";
 
-  const box =
-    document.getElementById("categories");
-
-  box.innerHTML = "";
-
-  categories.forEach(cat => {
-
-    const btn =
-      document.createElement("button");
-
-    btn.className =
-      "category " +
-      (selectedCategory === cat ? "active" : "");
-
-    btn.textContent = cat;
-
-    btn.onclick = function(){
-
-      selectedCategory = cat;
-
-      renderCategories();
-      renderProducts();
-
-    };
-
-    box.appendChild(btn);
-
-  });
-
+function saveAll(){
+localStorage.setItem("products",JSON.stringify(products));
 }
 
-
-/* نمایش محصولات */
-function renderProducts(){
-
-  const box =
-    document.getElementById("products");
-
-  const search =
-    normalize(
-      document.getElementById("search").value
-    );
-
-  let result = products.filter(product => {
-
-    const name =
-      normalize(product.name);
-
-    const matchesSearch =
-      name.includes(search);
-
-    const matchesCategory =
-      selectedCategory === "همه" ||
-      product.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-
-  });
-
-
-  box.innerHTML = "";
-
-
-  if(result.length === 0){
-
-    box.innerHTML =
-      '<div class="empty">کالایی پیدا نشد 😕</div>';
-
-    return;
-
-  }
-
-
-  result.forEach(product => {
-
-    const div =
-      document.createElement("div");
-
-    div.className = "product";
-
-    div.innerHTML = `
-      <h3>${escapeHTML(product.name)}</h3>
-
-      <div class="cat">
-        ${escapeHTML(product.category)}
-      </div>
-
-      <div class="price">
-        ${formatPrice(product.price)} تومان
-      </div>
-    `;
-
-    box.appendChild(div);
-
-  });
-
+function drawCategories(){
+$("categories").innerHTML="";
+categoriesList.forEach(c=>{
+const b=document.createElement("button");
+b.textContent=c;
+if(c===selectedCategory)b.classList.add("active");
+b.onclick=()=>{selectedCategory=c;drawCategories();drawProducts();};
+$("categories").appendChild(b);
+});
+$("productCategory").innerHTML="";
+categoriesList.filter(c=>c!=="همه محصولات").forEach(c=>{
+const o=document.createElement("option");
+o.value=c;o.textContent=c;
+$("productCategory").appendChild(o);
+});
 }
 
-
-/* نمایش قیمت با جداکننده */
-function formatPrice(price){
-
-  return Number(price).toLocaleString("fa-IR");
-
+function drawProducts(){
+const q=$("search").value.trim().toLowerCase();
+const list=products.filter(p=>
+(selectedCategory==="همه محصولات"||p.category===selectedCategory)&&
+String(p.name).toLowerCase().includes(q)
+);
+$("title").textContent=selectedCategory;
+$("products").innerHTML="";
+if(!list.length){
+$("products").innerHTML='<div class="empty">محصولی پیدا نشد.</div>';
+return;
+}
+list.forEach(p=>{
+const card=document.createElement("article");
+card.className="card";
+const name=document.createElement("h3");
+name.textContent=p.name;
+const tag=document.createElement("div");
+tag.className="tag";tag.textContent=p.category;
+const price=document.createElement("div");
+price.className="price";price.textContent=money(p.price);
+card.append(name,tag,price);
+if(admin){
+const actions=document.createElement("div");
+actions.className="actions";
+const edit=document.createElement("button");
+edit.className="edit";edit.textContent="ویرایش";
+edit.onclick=()=>editProduct(p.id);
+const del=document.createElement("button");
+del.className="delete";del.textContent="حذف";
+del.onclick=()=>deleteProduct(p.id);
+actions.append(edit,del);card.appendChild(actions);
+}
+$("products").appendChild(card);
+});
 }
 
-
-/* جلوگیری از ورود HTML */
-function escapeHTML(text){
-
-  return String(text)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* باز کردن پنل */
 function openAdmin(){
-
-  document.getElementById("adminModal")
-    .style.display = "block";
-
+if(admin){$("adminModal").style.display="block";}
+else{$("loginModal").style.display="block";}
 }
-
-
-/* بستن پنل */
-function closeAdmin(){
-
-  document.getElementById("adminModal")
-    .style.display = "none";
-
+function closeModal(id){$(id).style.display="none";}
+function login(e){
+e.preventDefault();
+if($("password").value==="123456"){
+admin=true;$("password").value="";
+closeModal("loginModal");
+$("adminModal").style.display="block";
+drawProducts();
+}else alert("رمز اشتباه است.");
 }
-
-
-/* ورود مدیر */
-function login(){
-
-  const password =
-    document.getElementById("password").value;
-
-  if(password === "123456"){
-
-    document.getElementById("loginBox")
-      .classList.add("hidden");
-
-    document.getElementById("panelBox")
-      .classList.remove("hidden");
-
-    renderAdminProducts();
-
-  }else{
-
-    document.getElementById("loginError")
-      .textContent = "رمز اشتباه است.";
-
-  }
-
-}
-
-
-/* خروج */
 function logout(){
-
-  document.getElementById("panelBox")
-    .classList.add("hidden");
-
-  document.getElementById("loginBox")
-    .classList.remove("hidden");
-
-  document.getElementById("password").value = "";
-
+admin=false;resetForm();closeModal("adminModal");drawProducts();
 }
-
-
-/* افزودن کالا */
-function addProduct(){
-
-  const name =
-    document.getElementById("productName")
-      .value.trim();
-
-  const price =
-    document.getElementById("productPrice")
-      .value;
-
-  const category =
-    document.getElementById("productCategory")
-      .value;
-
-
-  if(!name || !price){
-
-    alert("نام کالا و قیمت را وارد کنید.");
-
-    return;
-
-  }
-
-
-  products.push({
-
-    id: Date.now(),
-
-    name: name,
-
-    price: Number(price),
-
-    category: category
-
-  });
-
-
-  saveProducts();
-
-  document.getElementById("productName").value = "";
-
-  document.getElementById("productPrice").value = "";
-
-
-  renderProducts();
-  renderAdminProducts();
-
-
-  alert("کالا با موفقیت ثبت شد ✅");
-
+function saveProduct(e){
+e.preventDefault();
+const name=$("productName").value.trim();
+const price=Number($("productPrice").value);
+const category=$("productCategory").value;
+if(!name||!Number.isFinite(price)||price<0){
+alert("نام و قیمت معتبر وارد کن.");return;
 }
-
-
-/* نمایش کالاها در پنل */
-function renderAdminProducts(){
-
-  const box =
-    document.getElementById("adminProducts");
-
-  box.innerHTML = "";
-
-
-  if(products.length === 0){
-
-    box.innerHTML =
-      "<p>هنوز کالایی ثبت نشده.</p>";
-
-    return;
-
-  }
-
-
-  products.forEach(product => {
-
-    const div =
-      document.createElement("div");
-
-    div.className = "admin-product";
-
-    div.innerHTML = `
-
-      <strong>
-        ${escapeHTML(product.name)}
-      </strong>
-
-      <br>
-
-      <small>
-        ${escapeHTML(product.category)}
-        — ${formatPrice(product.price)} تومان
-      </small>
-
-      <br><br>
-
-      <button
-        class="btn primary"
-        onclick="editProduct(${product.id})"
-      >
-        ✏️ ویرایش
-      </button>
-
-      <button
-        class="btn danger"
-        onclick="deleteProduct(${product.id})"
-      >
-        🗑️ حذف
-      </button>
-
-    `;
-
-    box.appendChild(div);
-
-  });
-
+if(editingId!==null){
+const p=products.find(p=>Number(p.id)===Number(editingId));
+if(p){p.name=name;p.price=price;p.category=category;}
+}else{
+products.push({id:Date.now(),name,price,category});
 }
-
-
-/* حذف کالا */
-function deleteProduct(id){
-
-  if(!confirm("این کالا حذف شود؟")){
-    return;
-  }
-
-  products =
-    products.filter(p => p.id !== id);
-
-  saveProducts();
-
-  renderProducts();
-  renderAdminProducts();
-
+saveAll();resetForm();drawProducts();
 }
-
-
-/* ویرایش کالا */
 function editProduct(id){
-
-  const product =
-    products.find(p => p.id === id);
-
-  if(!product) return;
-
-
-  const newName =
-    prompt("نام کالا:", product.name);
-
-  if(newName === null) return;
-
-
-  const newPrice =
-    prompt("قیمت:", product.price);
-
-  if(newPrice === null) return;
-
-
-  product.name =
-    newName.trim();
-
-  product.price =
-    Number(newPrice);
-
-
-  saveProducts();
-
-  renderProducts();
-  renderAdminProducts();
-
+const p=products.find(p=>Number(p.id)===Number(id));
+if(!p)return;
+editingId=id;
+$("productName").value=p.name;
+$("productPrice").value=p.price;
+$("productCategory").value=p.category;
+$("saveBtn").textContent="ذخیره تغییرات";
+$("productName").scrollIntoView({behavior:"smooth",block:"center"});
 }
-
-
-/* شروع برنامه */
-renderCategories();
-renderProducts();
-
+function deleteProduct(id){
+const p=products.find(p=>Number(p.id)===Number(id));
+if(!p)return;
+if(confirm("محصول «"+p.name+"» حذف شود؟")){
+products=products.filter(x=>Number(x.id)!==Number(id));
+saveAll();drawProducts();
+}
+}
+function resetForm(){
+editingId=null;
+$("productForm").reset();
+$("saveBtn").textContent="افزودن محصول";
+}
+$("search").addEventListener("input",drawProducts);
+drawCategories();
+drawProducts();
 </script>
-
 </body>
 </html>
